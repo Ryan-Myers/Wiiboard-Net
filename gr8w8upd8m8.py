@@ -5,6 +5,9 @@ import time
 import bluetooth
 import sys
 import subprocess
+import sqlite3
+
+SQLCONN = sqlite3.connect('w8.db')
 
 CONTINUOUS_REPORTING = "04"  # Easier as string with leading zero
 
@@ -296,7 +299,13 @@ def main():
     board.setLight(True)
     board.receive()
 
-    print processor.weight
+    sqlcurs = SQLCONN.cursor()
+    sqlcurs.execute("INSERT INTO w8upd8 (weight) VALUES (" + str(processor.weight) + ")")    
+    SQLCONN.commit()
+    sqlcurs.close()
+    SQLCONN.close()
+    
+    print processor.weight    
 
     # Disconnect the balance board after exiting.
     subprocess.check_output(["bluez-test-device", "disconnect", address])

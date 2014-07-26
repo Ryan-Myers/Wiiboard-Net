@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
@@ -17,12 +17,14 @@ def connected(*args, **kwargs):
         global StatusCount
         StatusCount = StatusCount + 1
         
+        #For some reason, the connected/disconnected status gets sent twice, 
+        #so this prevents the second one from doing anything.
         if StatusCount % 2 == 1:
             if args[1] == False:
                 print 'Disconnected: ' + DEVID
             else:
                 print "Connected: " + DEVID
-                subprocess.call(["./gr8w8upd8m8.py", DEVID])
+                subprocess.call(["/home/ryan/projects/gr8w8upd8m8/gr8w8upd8m8.py", DEVID])
             
             StatusCount = 1
     else:
