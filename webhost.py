@@ -4,15 +4,6 @@ from bottle import route, run
 import sqlite3
 import json
 
-SQLCONN = sqlite3.connect('/home/ryan/projects/gr8w8upd8m8/w8.db')
-sqlcurs = SQLCONN.cursor()
-
-sqlcurs.execute("SELECT CAST(strftime('%s', timestamp) AS INTEGER) * 1000 AS timestamp, weight FROM w8upd8 LIMIT 1000")
-results = sqlcurs.fetchall()
-
-sqlcurs.close()
-SQLCONN.close()
-
 @route('/')
 @route('/index')
 def index():
@@ -58,6 +49,15 @@ def index():
 
 @route('/get_data')
 def get_data():
+    SQLCONN = sqlite3.connect('/etc/wiiboard-net/w8.db')
+    sqlcurs = SQLCONN.cursor()
+
+    sqlcurs.execute("SELECT CAST(strftime('%s', timestamp) AS INTEGER) * 1000 AS timestamp, weight FROM w8upd8 LIMIT 1000")
+    results = sqlcurs.fetchall()
+
+    sqlcurs.close()
+    SQLCONN.close()
+    
     return json.dumps(results)
 
 run(host='192.168.1.98', port=8080)
