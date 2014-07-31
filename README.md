@@ -1,30 +1,35 @@
-# Gr8W8Upd8M8
+# Wiiboard Net
 
 ## A Wii balance board weight reporter
 
-This script is based on [wiiboard-simple](https://code.google.com/p/wiiboard-simple/), with some dependencies (like
-pygame) removed. I'm pretty sure it only works on Linux.
+A complete system for utilizing the Wii Balance board to track your weight over time. 
+It logs all information to a database and enables a minimal web front end to show
+the history over time.
 
 ## Requirements
 
-To run `gr8webupd8m8`, you need:
-* Linux.
-* The `bluez-utils` package (you might need to install also `python-bluez`).
-* Bluetooth.
+This project was built with a Raspberry Pi in mind, so the requirements assume a base Raspbian image.
+`# apt-get install bluez bluez-utils python-bluez python-bottle`
+
+As of 2014-07-30 Raspbian uses BlueZ 4.99 by default, and this is a requirement. 
+BlueZ 5+ changes the DBus API in incompatible ways.
+
+## Setup
+
+First determine balance boards MAC address and sync the balance board with the computer through bluetooth.
+This is most easily achieved with `./xwiibind.sh 00:26:59:6B:AE:A3` and following the on screen prompts.
+
+Next, create the database with `./create-db.py`
+
+Then add `wiiboard-connect.py` and `webhost.py` to you startup scripts and reboot.
 
 ## Usage
 
-You can run it with:
+Once the setup is complete and the computer rebooted, you can now simply use the front button on the balance board
+to connect. Once the front LED stops flashing it's connected, and you will see it pulse once more to let you know you
+can step on to be weighed. Wait a couple of seconds and step off and the balance board will turn itself off.
 
-    ./gr8w8upd8m8.py
-
-It will prompt you to put the board in sync mode and it will search for and connect to it.
-
-If you already know the address, you can just specify it:
-
-    ./gr8w8upd8m8.py <board address>
-
-That will skip the discovery process, and connect directly.
+When you want to view the data visit the URL you setup earlier (`http://localhost:8080/` by default).
 
 `gr8w8upd8m8` uses the `bluez-test-device` utility of `bluez-utils` to disconnect the board at the end, which causes
 the board to shut off. Pairing it with the OS will allow you to use the front button to reconnect to it and run the
@@ -34,6 +39,14 @@ Calculating the final weight is done by calculating the mode of all the event da
 
 Feel free to use processor.weight to do whatever you want with the calculated weight (I send it to a server for
 further pointless processing).
+
+## Credits
+
+This software is made possible due in great part to the following people and projects.
+[Stavros Korokithakis](http://www.stavros.io/) - [GitHub profile](https://github.com/skorokithakis) - [Inspiring post](http://www.stavros.io/posts/your-weight-online/)
+[wiiboard-simple](https://code.google.com/p/wiiboard-simple/) for the basis of the gr8w8upd8m8.py script.
+[xwiimote](https://github.com/dvdhrm/xwiimote) for the xwiibind.sh script to pair the balance board permanently.
+[Highstock](http://www.highcharts.com/) for the web graph.
 
 ## License
 
