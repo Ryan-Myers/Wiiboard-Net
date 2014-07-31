@@ -7,7 +7,7 @@ import sys
 import subprocess
 import sqlite3
 
-SQLCONN = sqlite3.connect('/home/ryan/projects/gr8w8upd8m8/w8.db')
+SQLCONN = sqlite3.connect('/etc/wiiboardnet/w8.db')
 
 CONTINUOUS_REPORTING = "04"  # Easier as string with leading zero
 

@@ -49,7 +49,7 @@ def index():
 
 @route('/get_data')
 def get_data():
-    SQLCONN = sqlite3.connect('/etc/wiiboard-net/w8.db')
+    SQLCONN = sqlite3.connect('/etc/wiiboardnet/w8.db')
     sqlcurs = SQLCONN.cursor()
 
     sqlcurs.execute("SELECT CAST(strftime('%s', timestamp) AS INTEGER) * 1000 AS timestamp, weight FROM w8upd8 LIMIT 1000")

@@ -24,7 +24,7 @@ def connected(*args, **kwargs):
                 print 'Disconnected: ' + DEVID
             else:
                 print "Connected: " + DEVID
-                subprocess.call(["/home/ryan/projects/gr8w8upd8m8/gr8w8upd8m8.py", DEVID])
+                subprocess.call(["/usr/sbin/wiiboardnet", DEVID])
             
             StatusCount = 1
     else:
@@ -35,8 +35,7 @@ def main():
     bus = dbus.SystemBus(mainloop=dbus_loop)
 
     # Figure out the path to the wiiboard
-    manager = dbus.Interface(bus.get_object("org.bluez", "/"),
-							"org.bluez.Manager")
+    manager = dbus.Interface(bus.get_object("org.bluez", "/"), "org.bluez.Manager")
                             
     path = manager.DefaultAdapter()
     

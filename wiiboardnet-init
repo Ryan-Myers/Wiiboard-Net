@@ -1,0 +1,63 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          wiiboardnet
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Run wiiboardnet scripts on boot.
+### END INIT INFO
+
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC=wiiboardnet
+
+DAEMON_WEB=/usr/sbin/wiiboardnetd
+DAEMON_WEB_NAME=wiiboardnetd
+DAEMON_BT=/usr/sbin/wiiboardlistend
+DAEMON_BT_NAME=wiiboardlistend
+DAEMON_USER=root
+PIDFILE_WEB=/var/run/$DAEMON_WEB_NAME.pid
+PIDFILE_BT=/var/run/$DAEMON_BT_NAME.pid
+
+#DAEMON_ARGS=
+
+. /lib/lsb/init-functions
+
+do_start() {
+   log_daemon_msg "Starting system $DAEMON_WEB_NAME daemon"
+   start-stop-daemon --start --background --pidfile $PIDFILE_WEB --make-pidfile --user $DAEMON_USER --startas $DAEMON_WEB #-- $DAEMON_ARGS
+   log_daemon_msg "Starting system $DAEMON_BT_NAME daemon"
+   start-stop-daemon --start --background --pidfile $PIDFILE_BT --make-pidfile --user $DAEMON_USER --startas $DAEMON_BT #-- $DAEMON_ARGS
+   log_end_msg $?
+}
+
+do_stop() {
+   log_daemon_msg "Stopping system $DAEMON_WEB_NAME daemon"
+   start-stop-daemon --stop  --pidfile $PIDFILE_WEB
+   log_daemon_msg "Stopping system $DAEMON_BT_NAME daemon"
+   start-stop-daemon --stop  --pidfile $PIDFILE_BT
+   log_end_msg $?
+}
+
+case "$1" in
+
+   start|stop)
+      do_${1}
+   ;;
+
+   restart|reload|force-reload)
+      do_stop
+      do_start
+   ;;
+
+   status)
+      status_of_proc "$DAEMON_WEB_NAME" "$DAEMON_WEB" && status_of_proc "$DAEMON_BT_NAME" "$DAEMON_BT" && exit 0 || exit $?
+   ;;
+
+   *)
+      echo "Usage: /etc/init.d/$DESC {start|stop|restart|status}"
+      exit 1
+   ;;
+esac
+exit 0
