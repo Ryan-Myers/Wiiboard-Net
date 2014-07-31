@@ -6,6 +6,15 @@ A complete system for utilizing the Wii Balance board to track your weight over 
 It logs all information to a database and enables a minimal web front end to show
 the history over time.
 
+## TODO
+
+* Programmatically gather MAC address for balance board
+* Remove hardcoded MAC address from scripts and store it somewhere.
+* Create install script.
+* Add option (default?) to track weight in pounds instead of kilograms.
+* Clean up web front end.
+* Finish README
+
 ## Requirements
 
 This project was built with a Raspberry Pi in mind, so the requirements assume a base Raspbian image.
