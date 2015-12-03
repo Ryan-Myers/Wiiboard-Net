@@ -11,7 +11,7 @@ def index():
  <html>
     <head>
         <title>Weight Data</title>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
         <script type="text/javascript" src="http://code.highcharts.com/stock/modules/exporting.js"></script>
         <script type="text/javascript">            
@@ -19,6 +19,9 @@ def index():
                 $("#chart").highcharts("StockChart", {
                     title: {
                         text : "Weight over time"
+                    },
+                    rangeSelector: {
+                        selected: 2
                     },
                     credits: {
                         href: "http://github.com/Ryan-Myers",
@@ -42,7 +45,7 @@ def index():
         </script>
     </head>
     <body>
-        <div id="chart">TEST</div>
+        <div id="chart">Retrieving Weight Data...</div>
     </body>
 </html>
 '''
