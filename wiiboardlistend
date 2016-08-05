@@ -5,6 +5,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 import gobject
 
 import subprocess
+import bluezutils
 
 # ID of the Wiiboard
 DEV_ID = '00_26_59_6B_AE_A3'
@@ -12,7 +13,9 @@ DEVID = '00:26:59:6B:AE:A3'
 StatusCount = 0
 
 def connected(*args, **kwargs):
-    
+    for arg in args:
+        print arg    
+
     if args[0] == "Connected":
         global StatusCount
         StatusCount = StatusCount + 1
@@ -35,15 +38,17 @@ def main():
     bus = dbus.SystemBus(mainloop=dbus_loop)
 
     # Figure out the path to the wiiboard
-    manager = dbus.Interface(bus.get_object("org.bluez", "/"), "org.bluez.Manager")
+    #manager = dbus.Interface(bus.get_object("org.bluez", "/"), "org.bluez.Manager")
                             
-    path = manager.DefaultAdapter()
+    #path = "/org/bluez/hci0" #manager.DefaultAdapter()
     
-    adapter = dbus.Interface(bus.get_object("org.bluez", path),"org.bluez.Adapter")
+    path = path = bluezutils.find_adapter().object_path
+
+    adapter = dbus.Interface(bus.get_object("org.bluez", path),"org.bluez.Adapter1")
 
     wiiboard = bus.get_object('org.bluez', path + '/dev_' + DEV_ID)
         
-    wiiboard.connect_to_signal("PropertyChanged", connected)
+    wiiboard.connect_to_signal("PropertiesChanged", connected)
 
     print "Listening to " + DEVID + " for connection"
     
