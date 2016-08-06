@@ -31,7 +31,7 @@ def index():
                         text: "Ryan Myers"
                     },
                     series: [{
-                        name : "Weight in KG",
+                        name : "Weight in lbs",
                         data : weightdata,
                         tooltip: {
                             valueDecimals: 2
@@ -58,7 +58,7 @@ def get_data():
     SQLCONN = sqlite3.connect('/etc/wiiboardnet/w8.db')
     sqlcurs = SQLCONN.cursor()
 
-    sqlcurs.execute("SELECT CAST(strftime('%s', timestamp) AS INTEGER) * 1000 AS timestamp, weight FROM w8upd8 LIMIT 1000")
+    sqlcurs.execute("SELECT CAST(strftime('%s', timestamp) AS INTEGER) * 1000 AS timestamp, (weight * 2.20462) AS weight FROM w8upd8 LIMIT 1000")
     results = sqlcurs.fetchall()
 
     sqlcurs.close()
@@ -66,4 +66,4 @@ def get_data():
     
     return json.dumps(results)
 
-run(host='127.0.0.1', port=80)
+run(host='192.168.1.97', port=80)

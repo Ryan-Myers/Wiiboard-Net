@@ -1,0 +1,11 @@
+[Unit]
+Description=Start the Web front end, and Bluetooth Listener for the Wii Balance Board
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/wiiboardnet-init start
+ExecStop=/usr/sbin/wiiboardnet-init stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
