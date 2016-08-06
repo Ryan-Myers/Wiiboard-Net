@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 import collections
 import time
@@ -282,14 +282,6 @@ def main():
     else:
         address = sys.argv[1]
 
-    try:
-        # Disconnect already-connected devices.
-        # This is basically Linux black magic just to get the thing to work.
-        subprocess.check_output(["bluez-test-input", "disconnect", address], stderr=subprocess.STDOUT)
-        subprocess.check_output(["bluez-test-input", "disconnect", address], stderr=subprocess.STDOUT)
-    except:
-        pass
-
     print "Trying to connect..."
     board.connect(address)  # The wii board must be in sync mode at this time
     board.wait(200)
@@ -306,9 +298,6 @@ def main():
     SQLCONN.close()
     
     print processor.weight    
-
-    # Disconnect the balance board after exiting.
-    subprocess.check_output(["bluez-test-device", "disconnect", address])
 
 if __name__ == "__main__":
     main()

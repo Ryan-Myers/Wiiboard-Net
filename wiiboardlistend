@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
@@ -10,35 +10,25 @@ import bluezutils
 # ID of the Wiiboard
 DEV_ID = '00_26_59_6B_AE_A3'
 DEVID = '00:26:59:6B:AE:A3'
-StatusCount = 0
 
 def connected(*args, **kwargs):
-    for arg in args:
-        print arg    
-
-    if args[0] == "Connected":
-        global StatusCount
-        StatusCount = StatusCount + 1
+    dbus_message = args[1]
         
-        #For some reason, the connected/disconnected status gets sent twice, 
-        #so this prevents the second one from doing anything.
-        if StatusCount % 2 == 1:
-            if args[1] == False:
-                print 'Disconnected: ' + DEVID
-            else:
-                print "Connected: " + DEVID
-                subprocess.call(["/usr/sbin/wiiboardnet", DEVID])
-            
-            StatusCount = 1
+    if 'Connected' in dbus_message:
+        if dbus_message['Connected'] == False:
+            print 'Disconnected: ' + DEVID
+        else:
+            print "Connected: " + DEVID
+            subprocess.call(["/usr/sbin/wiiboardnet", DEVID])
     else:
-        print "Unsure: " + args[0]
+        print "Unsure: " + dbus_message
 
 def main():
     dbus_loop = DBusGMainLoop()
     bus = dbus.SystemBus(mainloop=dbus_loop)
 
     # Figure out the path to the wiiboard
-    path = path = bluezutils.find_adapter().object_path
+    path = bluezutils.find_adapter().object_path
 
     adapter = dbus.Interface(bus.get_object("org.bluez", path),"org.bluez.Adapter1")
 

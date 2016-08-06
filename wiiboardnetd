@@ -11,7 +11,10 @@ def index():
  <html>
     <head>
         <title>Weight Data</title>
-        <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script
+			  src="https://code.jquery.com/jquery-3.1.0.min.js"
+			  integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="
+			  crossorigin="anonymous"></script>
         <script type="text/javascript" src="http://code.highcharts.com/stock/highstock.js"></script>
         <script type="text/javascript" src="http://code.highcharts.com/stock/modules/exporting.js"></script>
         <script type="text/javascript">            
@@ -63,4 +66,4 @@ def get_data():
     
     return json.dumps(results)
 
-run(host='192.168.1.98', port=8088)
+run(host='127.0.0.1', port=80)
